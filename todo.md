@@ -1,5 +1,6 @@
 # TODO
 
+- [ ] Clean up file structure, put classes in packages
 - [ ] Create new log file parser that tracks all entities in the game
 - [ ] Improve the overlay asthetics and add graphic options for the user (i.e. change overlay style, change where overlay is displaed etc) 
 - [ ] Autodetect Heartstone log file location
