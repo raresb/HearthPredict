@@ -9,6 +9,9 @@ A Hearthstone overlay that guesses what the cards in your opponents deck are
 # Usage
 Coming Soon
 
+# Work in progress
+Alpha release coming by the end of May
+
 
 
 
