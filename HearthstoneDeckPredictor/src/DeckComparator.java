@@ -48,7 +48,7 @@ public class DeckComparator {
 		public Deck closestDeck(){
 			Deck closest = null;
 			int maxSimilarity = -1;
-			System.out.println(comparisonToDecks);
+			//System.out.println(comparisonToDecks);
 			for(int i = 0; i < decksToCheck.size(); i++){
 				if(comparisonToDecks.get(i) > maxSimilarity){
 					closest = decksToCheck.get(i);

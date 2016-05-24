@@ -1,3 +1,5 @@
+import java.awt.image.BufferedImage;
+
 
 public class Card {
 	private CardRarity rarity;
@@ -9,9 +11,10 @@ public class Card {
 	private int attack;
 	private int health;
 	private int durability;
+	private BufferedImage cardImg;
 	
 	public Card(CardRarity rarity, CardSet set, CardType type, String name, String cardId, int cost,
-			int attack, int health, int durability) {
+			int attack, int health, int durability, BufferedImage cardImg) {
 		this.rarity = rarity;
 		this.set = set;
 		this.type = type;
@@ -21,6 +24,21 @@ public class Card {
 		this.attack = attack;
 		this.health = health;
 		this.durability = durability;
+		this.cardImg = cardImg;
+	}
+	
+	public int compareTo(Card c){
+		if(this.cost > c.cost){
+			return 1;
+		}else if(this.cost == c.cost){
+			if(this.name.compareTo(c.name) < 0){
+				return -1;
+			}else{
+				return 1;
+			}
+		}else{
+			return -1;
+		}
 	}
 
 	public CardRarity getRarity() {
@@ -59,6 +77,14 @@ public class Card {
 		return durability;
 	}
 	
+	public BufferedImage getCardImg() {
+		return cardImg;
+	}
+
+	public void setCardImg(BufferedImage cardImg) {
+		this.cardImg = cardImg;
+	}
+
 	public String toString(){
 		return name;
 	}

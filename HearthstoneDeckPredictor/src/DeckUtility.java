@@ -3,6 +3,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class DeckUtility {
@@ -47,4 +50,14 @@ public class DeckUtility {
 			}
 			return classDecks;
 		}
+		
+		public static ArrayList<CardPair> mapDeckToSortedPairDeck(HashMap<String,Integer> deck){
+			ArrayList<CardPair> sortedDeck = new ArrayList<CardPair>();
+			for (Map.Entry<String, Integer> entry : deck.entrySet()) {
+			    sortedDeck.add(new CardPair(CachedData.nameToCard.get(entry.getKey()),entry.getValue()));
+			}
+			Collections.sort(sortedDeck);
+			return sortedDeck;
+		}
+		
 }

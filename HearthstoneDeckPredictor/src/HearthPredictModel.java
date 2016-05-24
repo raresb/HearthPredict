@@ -3,13 +3,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 
-public class HearthPredictModel {	
+public class HearthPredictModel implements ModelObservable{	
 	private ArrayList<ArrayList<Deck>> allDecks;
 	private ArrayList<Card> allCards;
 	private DeckComparator deckCompare;
 	private boolean gameLive = false;
+	private boolean gameRunning = false;
 	private DeckClass oppHero;
 	private HashSet<Integer> idsSeen = new HashSet<Integer>();
+	private ArrayList<Card> inOrderCards = new ArrayList<Card>();
+	private ArrayList<ModelObserver> observers = new ArrayList<ModelObserver>();
 	
 	public HearthPredictModel() throws IOException{
 		allDecks = CachedData.allDecks;
@@ -55,6 +58,14 @@ public class HearthPredictModel {
 		this.gameLive = gameLive;
 	}
 
+	public boolean isGameRunning() {
+		return gameRunning;
+	}
+
+	public void setGameRunning(boolean gameRunning) {
+		this.gameRunning = gameRunning;
+	}
+
 	public DeckClass getOppHero() {
 		return oppHero;
 	}
@@ -70,6 +81,49 @@ public class HearthPredictModel {
 	public void setIdsSeen(HashSet<Integer> idsSeen) {
 		this.idsSeen = idsSeen;
 	}
+
+	public ArrayList<Card> getInOrderCards() {
+		return inOrderCards;
+	}
+
+	public void setInOrderCards(ArrayList<Card> inOrderCards) {
+		this.inOrderCards = inOrderCards;
+	}
 	
+	/*public void addCardInOrder(Card c){
+		boolean added = false;
+		Card current;
+		for(int i = 0; i < inOrderCards.size(); i++){
+			current = inOrderCards.get(i);
+			if(c.getCardId().equals(current.getCardId())){
+				added = true;
+				break;
+			}
+			if(c.getCost() <current.getCost() || (c.getCost() == current.getCost() && c.getName().compareTo(current.getName()) < 0)){
+				inOrderCards.add(i, c);
+				added = true;
+				break;
+			}
+		}
+		if(!added){
+			inOrderCards.add(c);
+		}
+	}*/
+
+	public void addObserver(ModelObserver o) {
+		observers.add(o);
+	}
+
+	public void removeObserver(ModelObserver o) {
+		if(observers.contains(o)){
+			observers.remove(o);
+		}
+	}
+
+	public void notifyObservers() {
+		for(ModelObserver model : observers){
+			model.update(this);
+		}
+	}
 	
 }

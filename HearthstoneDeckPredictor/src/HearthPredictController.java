@@ -3,14 +3,17 @@ public class HearthPredictController {
 	
 	private final String handToPlay = "zone from OPPOSING HAND";
 	private final String secretToPlay = "zone from OPPOSING SECRET";
+	private final String deckToPlay = "zone from OPPOSING DECK";
 	private final String opponentHero = "zone from  -> OPPOSING PLAY (Hero)";
 
 	private final String gameState = "GameState.DebugPrintPower()";
 	private final String start = "CREATE_GAME";
-	private final String end = "value=WON";
+	private final String endWon = "value=WON";
+	private final String endTied = "value=TIED";
 	
+	//need to change how this is represented
 	private final int startId = 4;
-	private final int endId = 67;
+	private final int endId = 80;
 	
 	private HearthPredictModel model;
 	
@@ -24,11 +27,17 @@ public class HearthPredictController {
 		if(!(card = getOpponentCardPlayed(line)).equals("")){
 			model.getDeckCompare().newCard(card);
 			System.out.println(card + " was played by opponent");
+			
+			//System.out.println(model.getDeckCompare().getCurrentDeck().getDeck());
+			//System.out.println(model.getInOrderCards());
+			//System.out.println(model.getDeckCompare().closestDeck().getDeck());
+			model.notifyObservers(); 
 		}else if((dClass = getOpponentHero(line)) != null){
 			model.setOppHero(dClass);
 			model.setDeckCompare(new DeckComparator(DeckUtility.getClassDecks(model.getOppHero(), model.getAllDecks())));
 			System.out.println("Opponent is a " + dClass.name());
 		}else if(isStart(line)){
+			model.reset();
 			model.setGameLive(true);
 			System.out.println("Game has started");
 		}else if(isEnd(line)){
@@ -79,12 +88,17 @@ public class HearthPredictController {
 		int id;
 		String name;
 		if(line.contains(opponentHero)){
+			//System.out.println("contains hero");
 			nameIndex = line.indexOf("[name=");
+			//System.out.println(nameIndex);
 			if(nameIndex >= 0){
 				idIndex = line.indexOf("id=",nameIndex);
 				name = line.substring(nameIndex+6,idIndex-1);
+				//System.out.println(name);
 				dClass = nameToDeckClass(name);
 				id = Integer.parseInt(line.substring(idIndex+3,line.indexOf("zone=",idIndex)-1));
+
+				//System.out.println(model.getIdsSeen().contains(id));
 				if(id < startId || id > endId || model.getIdsSeen().contains(id)){
 					dClass = null;
 				}else{
@@ -100,7 +114,7 @@ public class HearthPredictController {
 		int nameIndex;
 		int idIndex;
 		int id;
-		if(line.contains(handToPlay) || line.contains(secretToPlay)){
+		if(line.contains(handToPlay) || line.contains(secretToPlay) || line.contains(deckToPlay)){
 			nameIndex = line.indexOf("[name=");
 			if(nameIndex >= 0){
 				idIndex = line.indexOf("id=",nameIndex);
@@ -125,7 +139,7 @@ public class HearthPredictController {
 	}
 	
 	public boolean isEnd(String line){
-		if(line.contains(gameState) && line.contains(end)){
+		if(line.contains(gameState) && (line.contains(endWon) || line.contains(endTied))){
 			return true;
 		}else{
 			return false;

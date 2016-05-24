@@ -1,3 +1,9 @@
+import java.awt.Color;
+import java.awt.Dimension;
+
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+
 
 public class Main {
 	
@@ -19,6 +25,9 @@ public class Main {
 		//HearthPredict hp = new HearthPredict();
 		CachedData.makeCache();
 		HearthPredictModel model = new HearthPredictModel();
+		OpponentTrackPanel pan = new OpponentTrackPanel();
+		pan.setPreferredSize(new Dimension(300,800));
+		model.addObserver(pan);
 		HearthPredictController controller = new HearthPredictController(model);
 		LogReader zone = new LogReader(controller, "D:\\Games\\Hearthstone\\Logs\\Zone.log");
 		Thread t1 = new Thread(zone);
@@ -26,6 +35,18 @@ public class Main {
 		Thread t2 = new Thread(power);
 		t1.start();
 		t2.start();
+        JFrame frame = new JFrame("Transparent Window");
+        frame.setUndecorated(true);
+        frame.setBackground(new Color(0, 0, 0, 0));
+        frame.setAlwaysOnTop(true);
+        // Without this, the window is draggable from any non transparent
+        // point, including points  inside textboxes.
+        frame.getRootPane().putClientProperty("apple.awt.draggableWindowBackground", false);
+        frame.getContentPane().setLayout(new java.awt.BorderLayout());
+        frame.getContentPane().add(pan);
+        frame.pack();
+        frame.setVisible(true);
+        
 		//System.out.println(ParseJson.makeCards("src//files//cards.collectible.json"));
 		/*Deck d = new Deck("C'Thun Druid,Innervate,2,Darnassus Aspirant,2,Wild Growth,2,Wrath,2,Mulch,1,Klaxxi Amber-Weaver,2,Swipe,2," +
 				"Nourish,1,Dark Arakkoa,2,Beckoner of Evil,2,Crazed Alchemist,2,Twilight Geomancer,2,Brann Bronzebeard,1,Disciple of C'Thun,2," +
