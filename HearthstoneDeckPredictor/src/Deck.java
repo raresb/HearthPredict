@@ -3,7 +3,6 @@ import java.util.Map.Entry;
 
 
 public class Deck {
-	//HashSet<CardSet> legalCardSets = new HashSet<CardSet>();
 	private DeckClass dClass;
 	private String name;
 	private HashMap<String,Integer> deck = new HashMap<String,Integer>();

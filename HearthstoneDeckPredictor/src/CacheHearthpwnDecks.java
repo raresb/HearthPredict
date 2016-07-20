@@ -75,7 +75,7 @@ public class CacheHearthpwnDecks {
 	}
 
 	public void writeToFile() throws IOException{
-		FileWriter writer = new FileWriter(dClass.name().toLowerCase() + "Decks.txt");
+		FileWriter writer = new FileWriter("decks/" + dClass.name().toLowerCase() + "Decks.txt");
 		BufferedWriter bufferedWriter = new BufferedWriter(writer);
 		bufferedWriter.write(properties);
 		bufferedWriter.write(HearthpwnScraper.getDecks(URL));

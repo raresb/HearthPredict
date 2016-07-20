@@ -9,16 +9,18 @@ public class HearthPredictModel implements ModelObservable{
 	private DeckComparator deckCompare;
 	private boolean gameLive = false;
 	private boolean gameRunning = false;
+	private boolean changed = false;
 	private DeckClass oppHero;
 	private HashSet<Integer> idsSeen = new HashSet<Integer>();
 	private ArrayList<Card> inOrderCards = new ArrayList<Card>();
 	private ArrayList<ModelObserver> observers = new ArrayList<ModelObserver>();
-	
+	private TransparentFrame frame = new TransparentFrame("HearthPredict");
+
 	public HearthPredictModel() throws IOException{
 		allDecks = CachedData.allDecks;
 		allCards = CachedData.allCards;
 	}
-	
+
 	public void reset(){
 		deckCompare = null;
 		gameLive = false;
@@ -89,7 +91,7 @@ public class HearthPredictModel implements ModelObservable{
 	public void setInOrderCards(ArrayList<Card> inOrderCards) {
 		this.inOrderCards = inOrderCards;
 	}
-	
+
 	/*public void addCardInOrder(Card c){
 		boolean added = false;
 		Card current;
@@ -110,6 +112,14 @@ public class HearthPredictModel implements ModelObservable{
 		}
 	}*/
 
+	public TransparentFrame getFrame() {
+		return frame;
+	}
+
+	public void setFrame(TransparentFrame frame) {
+		this.frame = frame;
+	}
+
 	public void addObserver(ModelObserver o) {
 		observers.add(o);
 	}
@@ -121,9 +131,16 @@ public class HearthPredictModel implements ModelObservable{
 	}
 
 	public void notifyObservers() {
-		for(ModelObserver model : observers){
-			model.update(this);
+		if(changed){
+			for(ModelObserver model : observers){
+				model.update(this);
+			}
+			changed = false;
 		}
 	}
-	
+
+	public void setChanged(boolean changed) {
+		this.changed = changed;
+	}
+
 }

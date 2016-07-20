@@ -7,4 +7,6 @@ public interface ModelObservable {
 	
 	public void notifyObservers();
 	
+	public void setChanged(boolean changed);
+	
 }

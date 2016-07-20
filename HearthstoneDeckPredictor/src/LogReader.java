@@ -44,7 +44,7 @@ public class LogReader implements Runnable{
 		
 		//skips everything that has been written so far in the log file
 		//this is not good when the player starts the application while a hearthstone game is already running
-		//filePointer = logfile.length();
+		filePointer = logfile.length();
 
 		try{
 			while(keepReading){

@@ -13,7 +13,7 @@ public class HearthPredictController {
 	
 	//need to change how this is represented
 	private final int startId = 4;
-	private final int endId = 80;
+	private final int endId = 67;
 	
 	private HearthPredictModel model;
 	
@@ -27,11 +27,10 @@ public class HearthPredictController {
 		if(!(card = getOpponentCardPlayed(line)).equals("")){
 			model.getDeckCompare().newCard(card);
 			System.out.println(card + " was played by opponent");
-			
+			model.setChanged(true);
 			//System.out.println(model.getDeckCompare().getCurrentDeck().getDeck());
 			//System.out.println(model.getInOrderCards());
 			//System.out.println(model.getDeckCompare().closestDeck().getDeck());
-			model.notifyObservers(); 
 		}else if((dClass = getOpponentHero(line)) != null){
 			model.setOppHero(dClass);
 			model.setDeckCompare(new DeckComparator(DeckUtility.getClassDecks(model.getOppHero(), model.getAllDecks())));
@@ -40,11 +39,14 @@ public class HearthPredictController {
 			model.reset();
 			model.setGameLive(true);
 			System.out.println("Game has started");
+			model.setChanged(true);
 		}else if(isEnd(line)){
 			model.setGameLive(false);
 			model.reset();
 			System.out.println("Game has ended");
+			model.setChanged(true);
 		}
+		model.notifyObservers(); 
 	}
 
 	private DeckClass nameToDeckClass(String name){

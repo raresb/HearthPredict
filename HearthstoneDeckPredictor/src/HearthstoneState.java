@@ -14,10 +14,9 @@ public class HearthstoneState implements Runnable {
 	public void run(){
 		
 		while(true){
-			
+						
 			String line;
 			String pidInfo ="";
-
 			
 			try {
 				Process p = Runtime.getRuntime().exec(System.getenv("windir") +"\\system32\\"+"tasklist.exe");
